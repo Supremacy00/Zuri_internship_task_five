@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="popup.css">
+  
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>Screen Recorder Extension</title>
+  
+</head>
+<body>
+    <div class="font-roboto">
+      <div class="w-full flex justify-between items-center px-7 mt-6">
+        <img src="images/Frame 249.png" alt="" class="w-32 h-7">
+        <img src="images/Framepop.png" alt="">
+      </div>
+      <p class="mt-3 px-7 w-68 font-light text-sm p-tag">This extension helps you record and share help videos with ease.</p>
+      <div class="flex justify-center items-center gap-8 mt-7">
+      <img src="images/Frame 4592.png" alt="">
+      <img src="images/Frame 4593.png" alt="">
+      </div>
+      <div class="border py-2.5 px-3 mx-7 rounded-xl mt-5 color">
+       <div class="flex justify-between items-center">
+        <div class="flex items-center gap-2">
+          <img src="images/video-camera.png" alt="">
+          <p class="camera">camera</p>
+         </div>
+          <label class="switch">
+            <input type="checkbox" id="cameraToggle">
+            <span class="slider round"></span>
+          </label>
+       </div>
+      </div>
+      <div class="border py-2.5 px-3 mx-7 rounded-xl mt-5 color">
+        <div class="flex justify-between items-center">
+         <div class="flex items-center gap-2">
+           <img src="images/microphone.png" alt="">
+           <p class="camera">Audio</p>
+          </div>
+           <label class="switch">
+             <input type="checkbox" id="audioToggle">
+             <span class="slider round"></span>
+           </label>
+        </div>
+       </div>
+      <div class="pz-7">
+        <button id="startRecording" class="btn text-white flex justify-center mx-auto mt-5 mb-7 rounded-xl py-3.5">Start Recording</button>
+        <button id="stopRecording" class="btn text-white flex justify-center mx-auto mt-5 mb-7 rounded-xl py-3.5" style="display: none;">Stop Recording</button>
+      </div>
+    </div>
+    <script type="module" src="background.js"></script>
+  <script type="module" src="content.js"></script>
+    <script type="module" src="popup.js" defer></script>
+</body>
+</html>

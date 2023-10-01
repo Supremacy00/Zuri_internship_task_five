@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "HelpMeOut",
+    "version": "1.0",
+    "description": "Record your screen with this awesome extension!",
+    "icons": {
+      "32": "icons/icon-32x32.png",
+      "80": "icons/icon-80x80.png"
+    },
+    "permissions": [
+      "desktopCapture",
+      "storage"
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": "icons/icon-32x32.png"
+    }
+
+  }
