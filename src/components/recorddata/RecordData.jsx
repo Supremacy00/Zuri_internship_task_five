@@ -1,14 +1,54 @@
-import HeroPrivacy from "../hero-privacy/HeroPrivacy";
+import { useState, useEffect, useRef } from 'react';
+import HeroPrivacy from '../hero-privacy/HeroPrivacy';
 import { useLocation } from 'react-router-dom';
 
-
 const RecordData = () => {
-
   const location = useLocation();
-  const videoURL = location.state?.videoURL || '';
-  console.log(videoURL)
+  const [videoURL, setVideoURL] = useState(location.state?.videoURL || '');
+  const videoURLRef = useRef(null);
+  const [video, setVideo] = useState(null);
+  const videoRef = useRef(null);
 
+  useEffect(() => {
+    const fetchVideoURL = async () => {
+      try {
+        const response = await fetch('your-video-url-endpoint');
+        const result = await response.json();
+        setVideoURL(result.videoURL);
+      } catch (error) {
+        console.error('Error fetching video URL:', error);
+      }
+    };
 
+    const fetchVideoData = async () => {
+      try {
+        const response = await fetch('your-video-data-endpoint');
+        const result = await response.json();
+        setVideo(result.videoData);
+      } catch (error) {
+        console.error('Error fetching video data:', error);
+      }
+    };
+
+    fetchVideoURL();
+    fetchVideoData();
+  }, []);
+
+  // useEffect to update video source when video state changes
+  useEffect(() => {
+    if (videoRef.current && video) {
+      const blob = new Blob([video], { type: 'video/webm' });
+      const videoURL = URL.createObjectURL(blob);
+      videoRef.current.src = videoURL;
+    }
+  }, [video]);
+
+  const handleCopyToClipboard = () => {
+    if (videoURLRef.current) {
+      videoURLRef.current.select();
+      document.execCommand('copy');
+    }
+  };
 
   return (
     <>
@@ -44,10 +84,12 @@ const RecordData = () => {
           className="w-full px-4 py-3 text-[13px] font-light mr-0 pr-20 overflow-hidden whitespace-nowrap border border-gray-300 rounded-xl shadow-sm bg-gray-50 focus:outline-none focus:border-gray-500 focus:ring focus:ring-gray-200"
           placeholder="https://www.helpmeout/Untitled_Video_20232509"
           style={{ textOverflow: 'ellipsis' }}
+          value={videoURL}
+          readOnly
         />
        <div className="absolute right-12 inset-y-[7px] flex items-center border border-gray-400 h-8 px-1 rounded-lg md:right-2 ">
           <img src="images/copy (2).png" alt="" className="w-4 h-4 text-white md:w-4 md:h-4" />
-       <button className=" px-2 py-4 my-2 rounded-md text-[13px] text-gray-gray-600 font-light">
+       <button className=" px-2 py-4 my-2 rounded-md text-[13px] text-gray-gray-600 font-light" onClick={handleCopyToClipboard}>
           Copy
         </button>
        </div>
@@ -57,7 +99,7 @@ const RecordData = () => {
       <h4 className="text-center mt-8 md:text-start md:text-[15px]">Share your video</h4>
           <div className="flex justify-center px-8 items-center gap-4 text-[14px] mt-3 md:px-0 md:gap-3 md:flex md:justify-start font-roboto font-light ">
               <div className="flex items-center gap-1 border border-gray-400 rounded px-1 py-1 md:px-3 md:py-2 md:text-[14px]">
-                  <img src="/images/Facebook svg.png" alt="" className="w-4 h-4" />
+                  <img src="/icons/Facebook svg.png" alt="" className="w-4 h-4" />
                   <p>Facebook</p>
               </div>
               <div className="flex items-center gap-1 border border-gray-400 rounded px-1 py-1 md:px-3 md:py-2 md:text-[14px]">
@@ -77,7 +119,7 @@ const RecordData = () => {
           <hr className="md:hidden"/>
          <div className="border border-slate-500 rounded-md">
          <div className="px-6 border-b-2 border-slate-400">
-              <img src="images/heroImg.jpg" alt="" className="w-[400px] h-[300px] mx-auto  mt-2 " />
+              <video src={video} alt="" className="w-[400px] h-[300px] mx-auto  mt-2 " />
           </div>
           <div className="flex justify-between items-center px-8 py-3">
             <img src="/icons/3_00.png" alt="" className="object-contain w-[100px] "/>

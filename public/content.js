@@ -37,8 +37,8 @@ async function startRecording() {
     const formData = new FormData();
     formData.append('recording', recordedBlob);
 
-    // Send a POST request to your backend
-    fetch('http://localhost:5000/upload', {
+   
+    fetch('https://savevid.onrender.com/upload', {
       method: 'POST',
       body: formData,
     })
@@ -50,7 +50,7 @@ async function startRecording() {
         console.error('Error uploading recording:', error);
       });
 
-    // Clear recordedChunks array for the next recording
+    
     recordedChunks = [];
   };
 
@@ -64,3 +64,24 @@ function stopRecording() {
 }
 
 
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.type === 'showStopButton') {
+    chrome.tabs.executeScript(
+      {
+        code: `
+          const stopButton = document.createElement('button');
+          stopButton.innerText = 'Stop Recording';
+          stopButton.id = 'stopRecording';
+          document.body.appendChild(stopButton);
+
+          stopButton.addEventListener('click', function() {
+            chrome.runtime.sendMessage({ type: 'stopRecording' });
+          });
+        `,
+      },
+      function () {
+        // Handle any response if needed
+      }
+    );
+  }
+});

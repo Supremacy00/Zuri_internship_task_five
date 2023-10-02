@@ -1,6 +1,6 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.type === 'showStopButton') {
-    // Create and inject a button into the active tab to stop recording
+
     chrome.tabs.executeScript(
       {
         code: `
@@ -15,16 +15,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         `,
       },
       function () {
-        // Handle any response if needed
       }
     );
-  }
-});
-
-// Content script (content.js)
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.type === 'stopRecording') {
-    // Handle stop recording logic in the content script
-    // ...
   }
 });

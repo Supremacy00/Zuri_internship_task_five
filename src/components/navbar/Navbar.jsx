@@ -35,7 +35,7 @@ const Navbar = () => {
            <FiMenu />
           </div>
         </div>
-        <ul className={`${isOpen ? "text-center bg-blue-800 w-full h-[200px] transition-all ease-out divide-purple-300 text-white pt-16" : "hidden"}`}>
+        <ul className={`${isOpen ? "text-center bg-primar-300 w-full h-[200px] transition-all ease-out divide-purple-300 text-white pt-16 mt-2" : "hidden"}`}>
           <li className="mb-4">Features</li>
           <li>How it started</li>
         </ul>

@@ -1,7 +1,7 @@
 let mediaRecorder;
-let recordedChunks = [];
 let isRecording = false;
-let fileKey; // Variable to store the file name obtained from the create endpoint
+let fileKey;
+
 
 document.addEventListener('DOMContentLoaded', function () {
   const startRecordingButton = document.getElementById('startRecording');
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
   startRecordingButton.addEventListener('click', async () => {
     if (cameraToggle.checked && audioToggle.checked && !isRecording) {
       try {
-        // Step 1: Create a file on the server
+    
         const createResponse = await fetch('https://savevid.onrender.com/create', {
           method: 'POST',
         });
@@ -26,24 +26,18 @@ document.addEventListener('DOMContentLoaded', function () {
           if (event.data.size > 0) {
             const chunk = new Blob([event.data], { type: 'video/webm' });
 
-            // Step 2: Update the file with chunks
             sendChunkToServer(chunk);
           }
         };
 
         mediaRecorder.onstop = () => {
-          // Finalize the file on the server if needed
-
-          // Clear recordedChunks array for the next recording
-          recordedChunks = [];
 
           isRecording = false;
         };
 
-        // Start recording
+      
         mediaRecorder.start();
 
-        // Show the stop recording button
         stopRecordingButton.style.display = 'block';
         startRecordingButton.style.display = 'none';
 
@@ -52,17 +46,14 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Error starting recording:', error);
       }
     } else {
-      // Inform the user to check both camera and audio toggles
       console.log('Please check both camera and audio toggles before starting recording.');
     }
   });
 
   stopRecordingButton.addEventListener('click', () => {
     if (mediaRecorder && isRecording) {
-      // Stop recording
       mediaRecorder.stop();
 
-      // Hide the stop recording button
       stopRecordingButton.style.display = 'none';
       startRecordingButton.style.display = 'block';
 
@@ -71,20 +62,17 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// Function to send a video chunk to the server
 async function sendChunkToServer(chunk) {
   const formData = new FormData();
   formData.append('file_name', fileKey);
   formData.append('recording_chunk', chunk);
 
   try {
-    // Replace 'https://savevid.onrender.com/update' with your actual update endpoint
     const updateResponse = await fetch('https://savevid.onrender.com/create', {
       method: 'POST',
       body: formData,
     });
 
-    // Handle the response as needed
     const updateData = await updateResponse.json();
     console.log('Chunk uploaded:', updateData);
   } catch (error) {
@@ -92,9 +80,15 @@ async function sendChunkToServer(chunk) {
   }
 }
 
-// Function to finalize the file on the server if needed
-// ... (previous code)
+document.getElementById('stopRecording').addEventListener('click', () => {
+  chrome.tabs.query({ active: true, currentWindow: true }, () => {
+    const recordingPageUrl = 'https://zuri-internship-task-five-git-main-supremacy00.vercel.app/recorddata'; 
 
-// Function to finalize the file on the server if needed
+    chrome.tabs.create({ url: recordingPageUrl }, (newTab) => {
+      console.log('Recording page opened:', newTab);
+    });
+  });
+});
 
-// ... (remaining code)
+
+
